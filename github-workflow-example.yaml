@@ -1,0 +1,14 @@
+name: Mergify Stack Autorebase
+on:
+  issue_comment:
+    types: [created, edited, deleted]
+
+jobs:
+  mergify-stack-auto-rebase:
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, '@mergify-cli stack rebase')
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Run mergify stack github-action-auto-rebase
+        uses: Mergifyio/mergify-cli@main
+        with:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}

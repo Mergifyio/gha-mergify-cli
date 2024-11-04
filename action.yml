@@ -1,0 +1,30 @@
+---
+name: Mergify stack auto rebase
+description: The action will rebase pull request stacks created by mergify-cli
+author: Mergify
+branding:
+  icon: at-sign
+  color: blue
+inputs:
+  GITHUB_TOKEN:
+    required: true
+    description: A personnal access token
+outputs:
+runs:
+  using: composite
+  steps:
+      - uses: actions/checkout@v4
+        with:
+           fetch-depth: 0
+
+      - name: Setup Python 🔧
+        uses: actions/setup-python@v5.1.1
+        with:
+          python-version: 3.12
+
+      - name: Run mergify stack github-action-auto-rebase
+        env:
+          GITHUB_TOKEN: ${{ inputs.GITHUB_TOKEN }}
+        run: |
+          python -m pip install mergify-cli
+          mergify stack github-action-auto-rebase
